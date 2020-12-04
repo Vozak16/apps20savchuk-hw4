@@ -7,8 +7,9 @@ import java.util.ArrayList;
 public class RWayTrie implements Trie {
 
     private static final int R = 26;
+    private final char FIRST_SYMBOL = 'a';
     private Node root = new Node();
-    static final char FIRST_SYMBOL = 'a';
+
 
     private static class Node {
         private Object value;
