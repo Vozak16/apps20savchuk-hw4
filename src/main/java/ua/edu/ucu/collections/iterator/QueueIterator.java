@@ -4,6 +4,7 @@ import ua.edu.ucu.collections.Queue;
 import ua.edu.ucu.collections.immutable.Node;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class QueueIterator implements Iterator {
 
@@ -23,6 +24,9 @@ public class QueueIterator implements Iterator {
     public Object next() {
         Object data = current.value;
         current = current.next;
+        if (current == null) {
+            throw new NoSuchElementException();
+        }
         return data;
     }
 }

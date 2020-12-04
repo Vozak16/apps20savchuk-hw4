@@ -8,7 +8,6 @@ public class RWayTrie implements Trie {
 
     private static final int R = 26;
     private Node root = new Node();
-    private int wordNumber = 0;
     private static final char firstSymbol = 'a';
 
     private static class Node {
@@ -18,20 +17,19 @@ public class RWayTrie implements Trie {
 
     @Override
     public void add(Tuple t) {
-        root = add(root, t.term, 0);
-        wordNumber += 1;
+        root = add(root, t.term, t.weight, 0);
     }
 
-    public Node add(Node x, String key, int d) {
+    public Node add(Node x, String key, int value, int d) {
         if (x == null) x = new Node();
 
         if (d == key.length()) {
-            x.value = wordNumber;
+            x.value = value;
             return x;
         }
 
         char c = key.charAt(d); // Use dth key char to identify subtrie.
-        x.next[c - firstSymbol] = add(x.next[c - firstSymbol], key, d+1);
+        x.next[c - firstSymbol] = add(x.next[c - firstSymbol], key, value, d+1);
 
         return x;
     }
