@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class PrefixMatches {
 
+    static final int MIN_WORD_LENGTH = 3;
+
     private final Trie trie;
 
     public PrefixMatches(Trie trie) {
@@ -27,7 +29,7 @@ public class PrefixMatches {
 
             for (String word: words) {
 
-                if (!trie.contains(word) && word.length() > 2) {
+                if (!trie.contains(word) && word.length() >= MIN_WORD_LENGTH) {
                     trie.add(new Tuple(word, word.length()));
                     count++;
                 }
@@ -59,7 +61,7 @@ public class PrefixMatches {
         Iterable<String> initialList = wordsWithPrefix(pref);
 
         int maxLength;
-        int minLength = 3;
+        int minLength = MIN_WORD_LENGTH;
 
         if (pref.length() > minLength) {
             minLength = pref.length();

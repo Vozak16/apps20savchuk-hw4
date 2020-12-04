@@ -8,7 +8,7 @@ public class RWayTrie implements Trie {
 
     private static final int R = 26;
     private Node root = new Node();
-    private static final char FIRST_SYMBOL = 'a';
+    static final char FIRST_SYMBOL = 'a';
 
     private static class Node {
         private Object value;
