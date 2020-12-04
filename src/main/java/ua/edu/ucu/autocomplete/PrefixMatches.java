@@ -4,7 +4,6 @@ import ua.edu.ucu.tries.Trie;
 import ua.edu.ucu.tries.Tuple;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,30 +45,36 @@ public class PrefixMatches {
     }
 
     public Iterable<String> wordsWithPrefix(String pref) {
-        if (pref.length() < 2) throw new IllegalArgumentException();
+
+        if (pref.length() < 2) {
+            throw new IllegalArgumentException();
+        }
+
         return trie.wordsWithPrefix(pref);
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
+
         List<String> resultList = new ArrayList<String>();
         Iterable<String> initialList = wordsWithPrefix(pref);
+
         int maxLength;
         int minLength = pref.length();
+        int minPrefLength = 2;
 
-        if(pref.length() == 2) {
+        if (pref.length() == minPrefLength) {
             minLength = 3;
         }
         maxLength = minLength + k - 1;
 
 
-        for(String elem: initialList) {
+        for (String elem: initialList) {
             if (elem.length() >= minLength && elem.length() <= maxLength) {
                 resultList.add(elem);
             }
         }
 
         return resultList;
-
     }
 
     public int size() {
