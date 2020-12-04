@@ -59,11 +59,10 @@ public class PrefixMatches {
         Iterable<String> initialList = wordsWithPrefix(pref);
 
         int maxLength;
-        int minLength = pref.length();
-        int minPrefLength = 2;
+        int minLength = 3;
 
-        if (pref.length() == minPrefLength) {
-            minLength = 3;
+        if (pref.length() > minLength) {
+            minLength = pref.length();
         }
         maxLength = minLength + k - 1;
 

@@ -8,7 +8,7 @@ public class RWayTrie implements Trie {
 
     private static final int R = 26;
     private Node root = new Node();
-    private final static char FIRST_SYMBOL = 'a';
+    private static final char FIRST_SYMBOL = 'a';
 
     private static class Node {
         private Object value;
@@ -33,8 +33,8 @@ public class RWayTrie implements Trie {
         }
 
         char c = key.charAt(d); // Use dth key char to identify subtrie.
-        x.next[c - FIRST_SYMBOL] = add(x.next[c - FIRST_SYMBOL], key, value, d+1);
-
+        x.next[c - FIRST_SYMBOL] =
+                add(x.next[c - FIRST_SYMBOL], key, value, d+1);
         return x;
     }
 
@@ -57,7 +57,6 @@ public class RWayTrie implements Trie {
 
         char c = key.charAt(d);
         return search(x.next[c - FIRST_SYMBOL], key, d+1);
-
     }
 
     @Override
@@ -87,7 +86,10 @@ public class RWayTrie implements Trie {
         }
 
         for (char i = FIRST_SYMBOL; i < R + FIRST_SYMBOL; i++) {
-            if (node.next[i - FIRST_SYMBOL] != null) return node;
+
+            if (node.next[i - FIRST_SYMBOL] != null) {
+                return node;
+            }
         }
 
         return null;
@@ -106,7 +108,6 @@ public class RWayTrie implements Trie {
         for (char i = FIRST_SYMBOL; i < R + FIRST_SYMBOL; i++) {
             collect(node.next[i - FIRST_SYMBOL], prefix + i, queue);
         }
-
     }
 
     @Override
