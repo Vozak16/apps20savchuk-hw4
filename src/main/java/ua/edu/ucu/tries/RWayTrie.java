@@ -2,8 +2,6 @@ package ua.edu.ucu.tries;
 
 import ua.edu.ucu.collections.Queue;
 
-import java.util.ArrayList;
-
 public class RWayTrie implements Trie {
 
     private static final int R = 26;

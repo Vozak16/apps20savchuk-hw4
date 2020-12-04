@@ -1,7 +1,6 @@
 package ua.edu.ucu.collections;
 
 import ua.edu.ucu.collections.immutable.ImmutableLinkedList;
-import ua.edu.ucu.collections.iterator.QueueIterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
