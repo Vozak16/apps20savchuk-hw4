@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class PrefixMatches {
 
-    static final int MIN_WORD_LENGTH = 3;
+    private static final int MIN_WORD_LENGTH = 3;
 
     private final Trie trie;
 
