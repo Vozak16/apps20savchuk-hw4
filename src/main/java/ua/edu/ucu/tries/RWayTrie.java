@@ -8,7 +8,7 @@ public class RWayTrie implements Trie {
 
     private static final int R = 26;
     private Node root = new Node();
-    private static final char firstSymbol = 'a';
+    private final static char FIRST_SYMBOL = 'a';
 
     private static class Node {
         private Object value;
@@ -20,8 +20,12 @@ public class RWayTrie implements Trie {
         root = add(root, t.term, t.weight, 0);
     }
 
-    public Node add(Node x, String key, int value, int d) {
-        if (x == null) x = new Node();
+    public Node add(Node node, String key, int value, int d) {
+        Node x = node;
+
+        if (x == null) {
+            x = new Node();
+        }
 
         if (d == key.length()) {
             x.value = value;
@@ -29,22 +33,30 @@ public class RWayTrie implements Trie {
         }
 
         char c = key.charAt(d); // Use dth key char to identify subtrie.
-        x.next[c - firstSymbol] = add(x.next[c - firstSymbol], key, value, d+1);
+        x.next[c - FIRST_SYMBOL] = add(x.next[c - FIRST_SYMBOL], key, value, d+1);
 
         return x;
     }
 
     @Override
     public boolean contains(String word) {
+
         Node x = search(root, word, 0);
         return x != null;
     }
 
     public Node search(Node x, String key, int d) {
-        if (x == null) return null;
-        if (d == key.length()) return x;
+
+        if (x == null) {
+            return null;
+        }
+
+        if (d == key.length()) {
+            return x;
+        }
+
         char c = key.charAt(d);
-        return search(x.next[c - firstSymbol], key, d+1);
+        return search(x.next[c - FIRST_SYMBOL], key, d+1);
 
     }
 
@@ -56,32 +68,43 @@ public class RWayTrie implements Trie {
     }
 
     private Node delete(Node node, String word, int d) {
-        if (node == null) return null;
-        if (d == word.length()) node.value = null;
+
+        if (node == null) {
+            return null;
+        }
+
+        if (d == word.length()) {
+            node.value = null;
+        }
         else {
             char c = word.charAt(d);
-            node.next[c - firstSymbol] =
-                    delete(node.next[c - firstSymbol], word, d+1);
+            node.next[c - FIRST_SYMBOL] =
+                    delete(node.next[c - FIRST_SYMBOL], word, d+1);
         }
+
         if (node.value != null) {
             return node;
         }
-        for (char i = firstSymbol; i < R + firstSymbol; i++) {
-            if (node.next[i - firstSymbol] != null) return node;
+
+        for (char i = FIRST_SYMBOL; i < R + FIRST_SYMBOL; i++) {
+            if (node.next[i - FIRST_SYMBOL] != null) return node;
         }
+
         return null;
     }
 
     public void collect(Node node, String prefix, Queue queue) {
 
-        if (node == null) return;
+        if (node == null) {
+            return;
+        }
 
         if (node.value != null) {
             queue.enqueue(prefix);
         }
 
-        for (char i = firstSymbol; i < R + firstSymbol; i++) {
-            collect(node.next[i - firstSymbol], prefix + i, queue);
+        for (char i = FIRST_SYMBOL; i < R + FIRST_SYMBOL; i++) {
+            collect(node.next[i - FIRST_SYMBOL], prefix + i, queue);
         }
 
     }

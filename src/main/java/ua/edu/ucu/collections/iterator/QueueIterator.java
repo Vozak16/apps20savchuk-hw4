@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 public class QueueIterator implements Iterator {
 
-    Node current;
+    private Node current;
 
     public QueueIterator(Queue queue) {
 
@@ -22,8 +22,8 @@ public class QueueIterator implements Iterator {
 
     @Override
     public Object next() {
-        Object data = current.value;
-        current = current.next;
+        Object data = current.getValue();
+        current = current.getNext();
         if (current == null) {
             throw new NoSuchElementException();
         }
