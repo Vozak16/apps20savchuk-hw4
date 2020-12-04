@@ -4,21 +4,6 @@ import java.util.Arrays;
 
 public class ImmutableLinkedList implements ImmutableList {
 
-    static class Node {
-        private Node next;
-        private Object value;
-
-        public Node() {
-            this.value = null;
-            this.next = null;
-        }
-
-        public Node(Object inputData) {
-            this.value = inputData;
-            this.next = null;
-        }
-    }
-
     private final Node head;
     private final int listLength;
 
@@ -124,6 +109,10 @@ public class ImmutableLinkedList implements ImmutableList {
         for (int i = index; i < newArray.length; i++) {
             newArray[i] = current.value;
             current = current.next;
+        }
+
+        if (newArray.length == 0) {
+            return new ImmutableLinkedList();
         }
 
         return new ImmutableLinkedList(newArray);

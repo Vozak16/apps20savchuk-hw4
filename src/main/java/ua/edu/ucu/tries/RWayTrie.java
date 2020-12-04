@@ -2,6 +2,8 @@ package ua.edu.ucu.tries;
 
 import ua.edu.ucu.collections.Queue;
 
+import java.util.ArrayList;
+
 public class RWayTrie implements Trie {
 
     private static final int R = 26;
@@ -11,7 +13,7 @@ public class RWayTrie implements Trie {
 
     private static class Node {
         private Object value;
-        private Node[] next = new Node[R];
+        private final Node[] next = new Node[R];
     }
 
     @Override
@@ -44,19 +46,15 @@ public class RWayTrie implements Trie {
         if (x == null) return null;
         if (d == key.length()) return x;
         char c = key.charAt(d);
-        x.next[c - firstSymbol] = search(x.next[c - firstSymbol], key, d+1);
+        return search(x.next[c - firstSymbol], key, d+1);
 
-        return x;
     }
 
     @Override
     public boolean delete(String word) {
-        Node tempNode = delete(root, word, 0);
-        if (tempNode != null) {
-            root = tempNode;
-            return true;
-        }
-        return false;
+        int previousSize = size();
+        root = delete(root, word, 0);
+        return size() < previousSize;
     }
 
     private Node delete(Node node, String word, int d) {
@@ -64,24 +62,28 @@ public class RWayTrie implements Trie {
         if (d == word.length()) node.value = null;
         else {
             char c = word.charAt(d);
-            node.next[c] = delete(node.next[c], word, d+1);
+            node.next[c - firstSymbol] =
+                    delete(node.next[c - firstSymbol], word, d+1);
         }
         if (node.value != null) {
             return node;
         }
-        for (char i = 0; i < R; i++) {
-            if (node.next[i] != null) return node;
+        for (char i = firstSymbol; i < R + firstSymbol; i++) {
+            if (node.next[i - firstSymbol] != null) return node;
         }
         return null;
     }
 
     public void collect(Node node, String prefix, Queue queue) {
+
         if (node == null) return;
+
         if (node.value != null) {
             queue.enqueue(prefix);
         }
-        for (char i = 0; i < R; i++) {
-            collect(node.next[i], prefix + i, queue);
+
+        for (char i = firstSymbol; i < R + firstSymbol; i++) {
+            collect(node.next[i - firstSymbol], prefix + i, queue);
         }
 
     }
@@ -95,12 +97,22 @@ public class RWayTrie implements Trie {
     public Iterable<String> wordsWithPrefix(String s) {
         Queue queue = new Queue();
         collect(search(root, s, 0), s, queue);
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        int resultSize = queue.size();
+        ArrayList<String> resultList = new ArrayList<String>();
+        for (int i = 0; i < resultSize; i++) {
+            resultList.add(i, (String) queue.dequeue());
+        }
+        return resultList;
     }
 
     @Override
     public int size() {
-        return wordNumber;
+
+        Queue queue = new Queue();
+        collect(search(root, "", 0), "", queue);
+
+        return queue.size();
     }
 
 }

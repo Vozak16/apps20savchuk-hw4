@@ -1,6 +1,11 @@
 package ua.edu.ucu.autocomplete;
 
 import ua.edu.ucu.tries.Trie;
+import ua.edu.ucu.tries.Tuple;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -8,33 +13,66 @@ import ua.edu.ucu.tries.Trie;
  */
 public class PrefixMatches {
 
-    private Trie trie;
+    private final Trie trie;
 
     public PrefixMatches(Trie trie) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.trie = trie;
     }
 
     public int load(String... strings) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        int count = 0;
+
+        for (String string: strings) {
+
+            String[] words = string.split("\\s+");
+
+            for (String word: words) {
+
+                if (!trie.contains(word) && word.length() > 2) {
+                    trie.add(new Tuple(word, word.length()));
+                    count++;
+                }
+            }
+        }
+        return trie.size();
     }
 
     public boolean contains(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.contains(word);
     }
 
     public boolean delete(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.delete(word);
     }
 
     public Iterable<String> wordsWithPrefix(String pref) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        if (pref.length() < 2) throw new IllegalArgumentException();
+        return trie.wordsWithPrefix(pref);
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        List<String> resultList = new ArrayList<String>();
+        Iterable<String> initialList = wordsWithPrefix(pref);
+        int maxLength;
+        int minLength = pref.length();
+
+        if(pref.length() == 2) {
+            minLength = 3;
+        }
+        maxLength = minLength + k - 1;
+
+
+        for(String elem: initialList) {
+            if (elem.length() >= minLength && elem.length() <= maxLength) {
+                resultList.add(elem);
+            }
+        }
+
+        return resultList;
+
     }
 
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.size();
     }
 }

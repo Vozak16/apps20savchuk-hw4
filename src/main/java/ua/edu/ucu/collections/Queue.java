@@ -1,10 +1,11 @@
 package ua.edu.ucu.collections;
 
 import ua.edu.ucu.collections.immutable.ImmutableLinkedList;
+import ua.edu.ucu.collections.iterator.QueueIterator;
 
 import java.util.Iterator;
 
-public class Queue {
+public class Queue implements Iterable  {
 
     private ImmutableLinkedList queue;
 
@@ -17,7 +18,14 @@ public class Queue {
     }
 
     public Object peek() {
+        if (queue.size() == 0) {
+            return null;
+        }
         return queue.getLast();
+    }
+
+    public int size() {
+        return queue.size();
     }
 
     public Object dequeue() {
@@ -30,4 +38,10 @@ public class Queue {
         queue = queue.addFirst(e);
     }
 
+
+    @Override
+    public Iterator iterator() {
+        return new QueueIterator(this) {
+        };
+    }
 }
