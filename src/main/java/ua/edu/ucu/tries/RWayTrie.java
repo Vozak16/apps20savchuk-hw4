@@ -118,15 +118,11 @@ public class RWayTrie implements Trie {
 
     @Override
     public Iterable<String> wordsWithPrefix(String s) {
+
         Queue queue = new Queue();
         collect(search(root, s, 0), s, queue);
 
-        int resultSize = queue.size();
-        ArrayList<String> resultList = new ArrayList<String>();
-        for (int i = 0; i < resultSize; i++) {
-            resultList.add(i, (String) queue.dequeue());
-        }
-        return resultList;
+        return queue::iterator;
     }
 
     @Override

@@ -4,8 +4,9 @@ import ua.edu.ucu.collections.immutable.ImmutableLinkedList;
 import ua.edu.ucu.collections.iterator.QueueIterator;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class Queue implements Iterable  {
+public class Queue {
 
     private ImmutableLinkedList queue;
 
@@ -38,10 +39,25 @@ public class Queue implements Iterable  {
         queue = queue.addFirst(e);
     }
 
+    public <T> Iterator<T> iterator() {
 
-    @Override
-    public Iterator iterator() {
-        return new QueueIterator(this) {
+        return new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return !queue.isEmpty();
+            }
+
+            @Override
+            public T next() {
+                if (queue.isEmpty()) {
+                    throw new NoSuchElementException();
+                }
+
+                return (T) dequeue();
+            }
         };
     }
+
+
+
 }
